@@ -1,0 +1,722 @@
+{
+  "PolicyFrameworkVersion": "0.0.0",
+  "Type": "policy",
+  "Actions": [
+    "take_off",
+    "land",
+    "go_to_landing_zone",
+    "execute_mission_task",
+    "notify_critical_battery",
+    "reset_critical_battery_notification_status"
+  ],
+  "States": {
+    "S_flying": {
+      "flying": 1,
+      "on_the_ground": 2
+    },
+    "S_pylon_inspection": {
+      "complete": 1,
+      "not_complete": 2
+    },
+    "S_at_landing_position": {
+      "yes": 1,
+      "no": 2
+    },
+    "S_communication": {
+      "stable": 1,
+      "lost": 2
+    },
+    "S_battery": {
+      "ok": 1,
+      "critical": 2
+    },
+    "S_critical_battery_notification": {
+      "not_yet_notified": 1,
+      "notified": 2
+    }
+  },
+  "Policy": [
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land",
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land",
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "take_off"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone",
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone",
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "execute_mission_task",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "take_off",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "execute_mission_task"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "execute_mission_task",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "land",
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "execute_mission_task"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "take_off"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "notify_critical_battery"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": [
+        "land"
+      ]
+    },
+    {
+      "S_flying": "flying",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "go_to_landing_zone"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "stable",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "complete",
+      "S_at_landing_position": "no",
+      "S_communication": "lost",
+      "S_battery": "critical",
+      "S_critical_battery_notification": "not_yet_notified",
+      "Actions": []
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "yes",
+      "S_communication": "lost",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "reset_critical_battery_notification_status"
+      ]
+    },
+    {
+      "S_flying": "on_the_ground",
+      "S_pylon_inspection": "not_complete",
+      "S_at_landing_position": "no",
+      "S_communication": "stable",
+      "S_battery": "ok",
+      "S_critical_battery_notification": "notified",
+      "Actions": [
+        "take_off",
+        "reset_critical_battery_notification_status"
+      ]
+    }
+  ]
+}
