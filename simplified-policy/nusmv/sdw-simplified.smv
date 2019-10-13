@@ -1,0 +1,115 @@
+MODULE main
+
+VAR
+    S_flying: {flying, on_the_ground};
+    S_pylon_inspection: {complete, not_complete};
+    S_at_landing_position: {yes, no};
+    S_communication: {stable, lost};
+    S_battery: {ok, critical};
+    S_critical_battery_notification: {not_yet_notified, notified};
+
+DEFINE
+    take_off :=
+        (S_flying = on_the_ground & S_pylon_inspection = not_complete & S_communication = stable & S_battery = ok);
+    land :=
+        (S_flying = flying & S_at_landing_position = yes & S_communication = lost) | 
+        (S_flying = flying & S_at_landing_position = yes & S_battery = critical) | 
+        (S_flying = flying & S_pylon_inspection = complete & S_at_landing_position = yes);
+    go_to_landing_zone :=
+        (S_flying = flying & S_at_landing_position = no & S_communication = lost) | 
+        (S_flying = flying & S_at_landing_position = no & S_battery = critical) | 
+        (S_flying = flying & S_pylon_inspection = complete & S_at_landing_position = no);
+    execute_mission_task :=
+        (S_flying = flying & S_pylon_inspection = not_complete & S_communication = stable & S_battery = ok);
+    notify_critical_battery :=
+        (S_communication = stable & S_battery = critical & S_critical_battery_notification = not_yet_notified);
+    reset_critical_battery_notification_status :=
+        (S_battery = ok & S_critical_battery_notification = notified);
+
+-- p1
+LTLSPEC
+    (
+        -- a1.1
+        S_flying = on_the_ground & S_at_landing_position = yes &
+        -- a1.2
+        G (
+            (
+                (
+                    (
+                        S_at_landing_position = yes & 
+                        X (S_at_landing_position != yes)
+                    ) |
+                    (
+                        S_at_landing_position = no & 
+                        X (S_at_landing_position != no)
+                    )
+                )
+            ) -> 
+            (
+                S_flying = flying &
+                X (S_flying = flying)
+            )
+        ) &
+        -- a1.3
+        G (    
+            (
+                S_flying = on_the_ground &
+                X (S_flying = flying)
+            ) ->
+            take_off
+        ) &
+        G (
+            (
+                S_flying = flying &
+                X (S_flying = on_the_ground)
+            ) ->
+            land
+        )
+    )
+    ->
+    G (S_flying = on_the_ground -> S_at_landing_position = yes)
+
+-- p3
+LTLSPEC
+    (
+        -- a3.2
+        G (S_communication != lost)
+    )
+    ->
+    G (
+        (
+            S_battery = critical &
+            S_critical_battery_notification = not_yet_notified
+        ) ->
+        notify_critical_battery
+    )
+
+-- p4
+LTLSPEC
+    (
+        -- a4.1
+        ! F G (execute_mission_task & X (S_pylon_inspection != complete)) &
+        -- a4.2
+        ! F G (take_off & X (S_flying != flying)) &
+        -- a4.5
+        G (    
+            (
+                S_flying = on_the_ground &
+                X (S_flying = flying)
+            ) ->
+            take_off
+        ) &
+        G (
+            (
+                S_flying = flying &
+                X (S_flying = on_the_ground)
+            ) ->
+            land
+        ) &
+        -- a4.8
+        F G (S_battery = ok) &
+        -- a4.10
+        F G (S_communication = stable)
+    )
+    ->
+    F (S_pylon_inspection = complete)

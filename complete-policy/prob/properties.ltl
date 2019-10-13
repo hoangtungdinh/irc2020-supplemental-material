@@ -1,0 +1,93 @@
+[P1]
+    (
+        (
+            {S_flying = on_the_ground_S_flying} & {S_at_landing_position = yes_S_at_landing_position}
+        ) &
+        G (
+            (
+                ({S_at_landing_position = yes_S_at_landing_position} & X (not {S_at_landing_position = yes_S_at_landing_position})) or
+                ({S_at_landing_position = no_S_at_landing_position} & X (not {S_at_landing_position = no_S_at_landing_position}))
+            ) =>
+            (
+                {S_flying = flying_S_flying} & X {S_flying = flying_S_flying}
+            )
+        ) &
+        G (
+            (
+                ({S_flying = flying_S_flying} & X (not {S_flying = flying_S_flying})) or
+                ({S_flying = on_the_ground_S_flying} & X (not {S_flying = on_the_ground_S_flying}))
+            ) =>
+            (
+                {take_off = TRUE} or {land = TRUE}
+            )
+        )
+    ) =>
+    G (
+        {S_flying = on_the_ground_S_flying} => {S_at_landing_position = yes_S_at_landing_position}
+    )
+
+[P2]
+    (
+        {S_flying = on_the_ground_S_flying} &
+        G (
+            (
+                {S_flying = on_the_ground_S_flying }&
+                X {S_flying = flying_S_flying}
+            ) =>
+            {take_off = TRUE}
+        ) &
+        G (
+            {S_mission_started = yes_S_mission_started} => X {S_mission_started = yes_S_mission_started}
+        )
+    ) =>
+    G ({S_mission_started = no_S_mission_started}=> (not {S_flying = flying_S_flying}))
+
+[P3]
+    (
+        G ({S_mission_configuration = configured_S_mission_configuration} => (not {S_at_landing_position = unknown_S_at_landing_position})) &
+        G ((not {S_at_landing_position = unknown_S_at_landing_position}) => {S_mission_configuration = configured_S_mission_configuration}) &
+        G (not {S_communication = lost_S_communication})
+    ) =>
+    G (
+        (
+            {S_battery = critical_S_battery} & 
+            {S_critical_battery_notification = not_yet_notified_S_critical_battery_notification}
+        ) =>
+        {notify_critical_battery = TRUE}
+    )
+
+[P4]
+    (
+        not (F G ({execute_mission_task = TRUE} & {S_being_blocked = no_S_being_blocked} & X (not {S_pylon_inspection = complete_S_pylon_inspection}))) &
+        not (F G ({take_off = TRUE} & X (not {S_flying = flying_S_flying}))) &
+        not (F G ({land = TRUE} & X (not {S_flying = on_the_ground_S_flying}))) &
+        not (F G ({configure_mission = TRUE} & X (not {S_mission_configuration = configured_S_mission_configuration}))) &
+        G (    
+            (
+                {S_flying = on_the_ground_S_flying} &
+                X ({S_flying = flying_S_flying})
+            ) =>
+            {take_off = TRUE}
+        ) &
+        G (
+            (
+                {S_flying = flying_S_flying} &
+                X ({S_flying = on_the_ground_S_flying})
+            ) =>
+            {land = TRUE}
+        ) &
+        G (
+            {S_mission_started = yes_S_mission_started} => X ({S_mission_started = yes_S_mission_started})
+        ) &
+        G ({S_mission_configuration = configured_S_mission_configuration} => (not {S_at_landing_position = unknown_S_at_landing_position})) &
+        G ((not {S_at_landing_position = unknown_S_at_landing_position}) => {S_mission_configuration = configured_S_mission_configuration}) &
+        F G ({S_battery = ok_S_battery}) &
+        F G ({S_being_blocked = no_S_being_blocked}) &
+        F G ({S_communication = stable_S_communication}) &
+        F G ({S_obstacle_detection = stable_S_obstacle_detection}) &
+        G ({S_mission_abort_request = no_S_mission_abort_request}) &
+        F G ({S_manual_control_request = off_S_manual_control_request}) &
+        F ({S_mission_started = yes_S_mission_started}) &
+        G ({S_mission_configuration = configured_S_mission_configuration} => X ({S_mission_configuration = configured_S_mission_configuration}))
+    ) =>
+    F ({S_pylon_inspection = complete_S_pylon_inspection})

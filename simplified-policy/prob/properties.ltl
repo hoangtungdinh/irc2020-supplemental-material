@@ -1,0 +1,57 @@
+[P1]
+    (
+        (
+            {S_flying = on_the_ground_S_flying} & {S_at_landing_position = yes_S_at_landing_position}
+        ) &
+        G (
+            (
+                ({S_at_landing_position = yes_S_at_landing_position} & X (not {S_at_landing_position = yes_S_at_landing_position})) or
+                ({S_at_landing_position = no_S_at_landing_position} & X (not {S_at_landing_position = no_S_at_landing_position}))
+            ) =>
+            (
+                {S_flying = flying_S_flying} & X {S_flying = flying_S_flying}
+            )
+        ) &
+        G (
+            (
+                ({S_flying = flying_S_flying} & X (not {S_flying = flying_S_flying})) or
+                ({S_flying = on_the_ground_S_flying} & X (not {S_flying = on_the_ground_S_flying}))
+            ) =>
+            (
+                {take_off = TRUE} or {land = TRUE}
+            )
+        )
+    ) =>
+    G (
+        {S_flying = on_the_ground_S_flying} => {S_at_landing_position = yes_S_at_landing_position}
+    )
+
+[P3]
+    (
+        G (not {S_communication = lost_S_communication})
+    ) =>
+    G (
+        (
+            {S_battery = critical_S_battery} & 
+            {S_critical_battery_notification = not_yet_notified_S_critical_battery_notification}
+        ) =>
+        {notify_critical_battery = TRUE}
+    )
+
+[P4]
+    (
+        not (F G ({execute_mission_task = TRUE} & X not {S_pylon_inspection = complete_S_pylon_inspection})) &
+        not (F G ({take_off = TRUE} & X not {S_flying = flying_S_flying})) &
+        G (
+            (
+                ({S_flying = flying_S_flying} & X (not {S_flying = flying_S_flying})) or
+                ({S_flying = on_the_ground_S_flying} & X (not {S_flying = on_the_ground_S_flying}))
+            ) =>
+            (
+                {take_off = TRUE} or {land = TRUE}
+            )
+        ) &
+        F G ({S_battery = ok_S_battery}) &
+        F G ({S_communication = stable_S_communication})
+    ) =>
+    F ({S_pylon_inspection = complete_S_pylon_inspection})
